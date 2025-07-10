@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Fitness Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <h1>FitTrack</h1>
+            </div>
+            <div class="date-display" id="current-date"></div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="workouts">Workouts</button>
+            <button class="tab-btn" data-tab="nutrition">Nutrition</button>
+            <button class="tab-btn" data-tab="progress">Progress</button>
+        </nav>
+
+        <main>
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Today's Workout</h3>
+                        <p id="today-workout">No workout logged</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Calories Burned</h3>
+                        <p id="calories-burned">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Water Intake</h3>
+                        <div class="water-tracker">
+                            <p id="water-amount">0</p>
+                            <span>glasses</span>
+                            <button id="add-water"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Weight</h3>
+                        <p id="current-weight">-- kg</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-buttons">
+                        <button id="log-workout-btn" class="action-btn">
+                            <i class="fas fa-running"></i>
+                            <span>Log Workout</span>
+                        </button>
+                        <button id="log-meal-btn" class="action-btn">
+                            <i class="fas fa-utensils"></i>
+                            <span>Log Meal</span>
+                        </button>
+                        <button id="add-weight-btn" class="action-btn">
+                            <i class="fas fa-weight"></i>
+                            <span>Add Weight</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <ul id="activity-list"></ul>
+                </div>
+            </div>
+
+            <!-- Workouts Tab -->
+            <div class="tab-content" id="workouts">
+                <div class="workout-header">
+                    <h2>Workout Log</h2>
+                    <button id="add-workout-btn" class="primary-btn">Add Workout</button>
+                </div>
+                <div class="workout-list" id="workout-list"></div>
+            </div>
+
+            <!-- Nutrition Tab -->
+            <div class="tab-content" id="nutrition">
+                <div class="nutrition-header">
+                    <h2>Nutrition Tracker</h2>
+                    <div class="calorie-counter">
+                        <div class="calorie-display">
+                            <h3>Calories Consumed</h3>
+                            <p id="calories-consumed">0</p>
+                        </div>
+                        <div class="calorie-display">
+                            <h3>Remaining</h3>
+                            <p id="calories-remaining">2000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="meal-log">
+                    <div class="meal-log-header">
+                        <h3>Today's Meals</h3>
+                        <button id="add-meal-btn" class="primary-btn">Add Meal</button>
+                    </div>
+                    <div class="meal-list" id="meal-list"></div>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progress">
+                <div class="progress-header">
+                    <h2>Your Progress</h2>
+                    <select id="progress-timeframe">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                        <option value="365">Last Year</option>
+                    </select>
+                </div>
+                <div class="progress-charts">
+                    <div class="chart-container">
+                        <h3>Weight Trend</h3>
+                        <canvas id="weight-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Workout Frequency</h3>
+                        <canvas id="workout-chart"></canvas>
+                    </div>
+                </div>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <h3>Total Workouts</h3>
+                        <p id="total-workouts">0</p>
+                    </div>
+                    <div class="progress-stat">
+                        <h3>Weight Change</h3>
+                        <p id="weight-change">--</p>
+                    </div>
+                    <div class="progress-stat">
+                        <h3>Avg. Weekly Workouts</h3>
+                        <p id="avg-workouts">0</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="workout-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Log Workout</h2>
+            <form id="workout-form">
+                <div class="form-group">
+                    <label for="workout-type">Workout Type</label>
+                    <select id="workout-type" required>
+                        <option value="">Select type</option>
+                        <option value="Running">Running</option>
+                        <option value="Cycling">Cycling</option>
+                        <option value="Swimming">Swimming</option>
+                        <option value="Weight Training">Weight Training</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="HIIT">HIIT</option>
+                        <option value="Walking">Walking</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="workout-duration">Duration (minutes)</label>
+                    <input type="number" id="workout-duration" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="workout-intensity">Intensity</label>
+                    <select id="workout-intensity" required>
+                        <option value="Light">Light</option>
+                        <option value="Moderate" selected>Moderate</option>
+                        <option value="Vigorous">Vigorous</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="workout-calories">Calories Burned (optional)</label>
+                    <input type="number" id="workout-calories" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="workout-notes">Notes</label>
+                    <textarea id="workout-notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="primary-btn">Save Workout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="meal-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Log Meal</h2>
+            <form id="meal-form">
+                <div class="form-group">
+                    <label for="meal-type">Meal Type</label>
+                    <select id="meal-type" required>
+                        <option value="">Select type</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snack">Snack</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="meal-name">Meal Name</label>
+                    <input type="text" id="meal-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="meal-calories">Calories</label>
+                    <input type="number" id="meal-calories" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="meal-protein">Protein (g)</label>
+                    <input type="number" id="meal-protein" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="meal-carbs">Carbs (g)</label>
+                    <input type="number" id="meal-carbs" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="meal-fat">Fat (g)</label>
+                    <input type="number" id="meal-fat" min="0">
+                </div>
+                <button type="submit" class="primary-btn">Save Meal</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="weight-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Log Weight</h2>
+            <form id="weight-form">
+                <div class="form-group">
+                    <label for="weight-value">Weight (kg)</label>
+                    <input type="number" id="weight-value" step="0.1" min="30" max="300" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight-date">Date</label>
+                    <input type="date" id="weight-date" required>
+                </div>
+                <button type="submit" class="primary-btn">Save Weight</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
